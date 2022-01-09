@@ -1,5 +1,12 @@
 import { Response } from "express";
 
+/**
+ * Este arquivo contém funções helpers que vão auxiliar e facilitar
+ * a leitura e a nossa aplicação.
+ *
+ * Aqui vamos definir, basicamente os tipos de retornos que vamos ter nos controllers
+ */
+
 export const ok = (res: Response, data: any) => {
   return res.status(200).json(data);
 };
