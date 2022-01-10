@@ -48,10 +48,16 @@ export class ProjectRepository {
     // retorna as informações conforme o tipo de retorno do método.
     return {
       uid: project.uid,
-      name: project.name,
-      description: project.description,
-      endDate: project.endDate,
-      startDate: project.startDate,
+      title: project.name,
+      detail: project.description,
+      expectEndDate: project.endDate,
+      expectStartDate: project.startDate,
     };
+  }
+
+  async getByUid(uid: string): Promise<Project | undefined> {
+    console.log("vai consultar o banco para recuperar o registro pelo uid");
+
+    return {} as any;
   }
 }

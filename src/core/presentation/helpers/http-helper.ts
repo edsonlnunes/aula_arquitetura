@@ -14,3 +14,7 @@ export const ok = (res: Response, data: any) => {
 export const serverError = (res: Response) => {
   return res.status(500).json({ error: "Internal Server Error" });
 };
+
+export const notFound = (res: Response) => {
+  return res.status(404).json({ error: "Data not found" });
+};
