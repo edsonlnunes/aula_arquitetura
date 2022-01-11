@@ -35,7 +35,7 @@ export class ProjectRepository {
      * OBS: Considerando que a classe ProjectEntity tenha um construtor recebendo
      * os parametros definido.
      */
-    const project = ProjectEntity.create({
+    const projectEntity = ProjectEntity.create({
       name: data.name,
       description: data.description,
       startDate: data.startDate,
@@ -43,21 +43,29 @@ export class ProjectRepository {
     });
 
     // de falto salta as informações no banco de dados
-    await project.save();
+    await projectEntity.save();
 
     // retorna as informações conforme o tipo de retorno do método.
-    return {
-      uid: project.uid,
-      title: project.name,
-      detail: project.description,
-      expectEndDate: project.endDate,
-      expectStartDate: project.startDate,
-    };
+    return this.mapperFromEntityToModel(projectEntity);
   }
 
   async getByUid(uid: string): Promise<Project | undefined> {
     console.log("vai consultar o banco para recuperar o registro pelo uid");
 
-    return {} as any;
+    const projectEntity = await ProjectEntity.findOne(uid);
+
+    if (!projectEntity) return undefined;
+
+    return this.mapperFromEntityToModel(projectEntity);
+  }
+
+  private mapperFromEntityToModel(entity: ProjectEntity): Project {
+    return {
+      uid: entity.uid,
+      title: entity.name,
+      detail: entity.description,
+      expectEndDate: entity.endDate,
+      expectStartDate: entity.startDate,
+    };
   }
 }

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { CreateProjectController } from "../controllers/create-project.controller";
+import { GetOneProjectController } from "../controllers/get-one-project.controller";
 
 /**
  * Este arquivo tem a obrigação de definir as rotas dessa feature
@@ -10,6 +11,7 @@ export default class ProjectRoutes {
     const routes = Router();
 
     routes.post("/projects", new CreateProjectController().handle);
+    routes.get("/projects/:uid", new GetOneProjectController().handle);
 
     return routes;
   }
