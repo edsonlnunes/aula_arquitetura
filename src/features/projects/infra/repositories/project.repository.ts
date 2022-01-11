@@ -85,6 +85,14 @@ export class ProjectRepository {
     return this.mapperFromEntityToModel(projectUpdated);
   }
 
+  /**
+   * Método privado (só é visivel dentro desta classe) que encapsula
+   * a lógica de transformação de um objeto do tipo ProjectEntity
+   * para a model Project.
+   *
+   * Podemos reutilizar este método em todos os métodos desta classe,
+   * sempre que quisermos mapear a entidade para a model
+   */
   private mapperFromEntityToModel(entity: ProjectEntity): Project {
     return {
       uid: entity.uid,

@@ -9,6 +9,7 @@ import { ProjectRepository } from "../../infra/repositories/project.repository";
 
 export class UpdateProjectController implements Controller {
   async handle(req: Request, res: Response): Promise<any> {
+    console.log("lógica para atualizar um projeto acessando o repositório");
     try {
       const { uid } = req.params;
 

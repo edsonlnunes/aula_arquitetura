@@ -9,7 +9,9 @@ import { ProjectRepository } from "../../infra/repositories/project.repository";
 
 export class GetOneProjectController implements Controller {
   async handle(req: Request, res: Response): Promise<any> {
-    console.log("lógica para buscar um projeto por um identificador (uid)");
+    console.log(
+      "lógica para buscar um projeto por um identificador (uid) acessando o repositório"
+    );
     try {
       const { uid } = req.params;
 

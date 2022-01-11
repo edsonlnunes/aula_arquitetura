@@ -9,7 +9,7 @@ import { ProjectRepository } from "../../infra/repositories/project.repository";
 
 export class GetAllProjectsController implements Controller {
   async handle(req: Request, res: Response): Promise<any> {
-    console.log("lógica para buscar todos os projetos");
+    console.log("lógica para buscar todos os projetos acessando o repositório");
     try {
       const repository = new ProjectRepository();
 
