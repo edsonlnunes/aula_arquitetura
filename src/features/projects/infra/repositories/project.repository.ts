@@ -1,7 +1,8 @@
 import { ProjectEntity } from "../../../../core/infra/data/database/entities/ProjectEntity";
 import { Project } from "../../domain/models/project";
 
-interface Params {
+interface ProjectParams {
+  uid?: string;
   name: string;
   description: string;
   startDate: Date;
@@ -24,7 +25,7 @@ export class ProjectRepository {
    * ele recebe as informações via parâmetros e é feito uma lógica para salvar as informações
    * na base de dados.
    */
-  async create(data: Params): Promise<Project> {
+  async create(data: ProjectParams): Promise<Project> {
     /**
      * Cria uma instância da classe ProjectEntity passando os dados.
      *
@@ -57,6 +58,31 @@ export class ProjectRepository {
     if (!projectEntity) return undefined;
 
     return this.mapperFromEntityToModel(projectEntity);
+  }
+
+  async getAll(): Promise<Project[]> {
+    console.log("consultar o banco e recuperar todos os registros");
+    const projectEntities = await ProjectEntity.find();
+
+    return projectEntities.map((projectEntity) =>
+      this.mapperFromEntityToModel(projectEntity)
+    );
+  }
+
+  async editProject(data: ProjectParams): Promise<Project | undefined> {
+    const projectEntity = await ProjectEntity.findOne(data.uid);
+
+    if (!projectEntity) return undefined;
+
+    const projectUpdated = ProjectEntity.create({
+      name: data.name,
+      description: data.description,
+      uid: data.uid,
+    });
+
+    await projectUpdated.save();
+
+    return this.mapperFromEntityToModel(projectUpdated);
   }
 
   private mapperFromEntityToModel(entity: ProjectEntity): Project {

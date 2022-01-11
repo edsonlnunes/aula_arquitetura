@@ -7,17 +7,18 @@ import {
 } from "../../../../core/presentation/helpers/http-helper";
 import { ProjectRepository } from "../../infra/repositories/project.repository";
 
-export class GetAllProjectsController implements Controller {
+export class UpdateProjectController implements Controller {
   async handle(req: Request, res: Response): Promise<any> {
-    console.log("lógica para buscar todos os projetos");
     try {
+      const { uid } = req.params;
+
       const repository = new ProjectRepository();
 
-      const projects = await repository.getAll();
+      const project = await repository.editProject({ uid, ...req.body });
 
-      if (projects.length === 0) return notFound(res);
+      if (!project) return notFound(res);
 
-      return ok(res, projects);
+      return ok(res, project);
     } catch (error) {
       return serverError(res);
     }
