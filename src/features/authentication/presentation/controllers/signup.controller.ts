@@ -19,7 +19,7 @@ export class SignUpController implements Controller {
     const data = req.body;
 
     if (data.password !== data.confirmPassword) {
-      return badRequest(res);
+      return badRequest(res, "Password is not match");
     }
 
     try {
@@ -28,8 +28,8 @@ export class SignUpController implements Controller {
       const result = await usecase.execute(req.body);
 
       return ok(res, result);
-    } catch (error) {
-      return serverError(res);
+    } catch (error: any) {
+      return serverError(res, error);
     }
   }
 }

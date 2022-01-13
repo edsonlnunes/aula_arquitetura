@@ -12,7 +12,7 @@ interface UserParams {
 }
 
 export class UserRepository {
-  async verifyUserByEmail(email: string): Promise<boolean> {
+  async verifyUserAlreadExistsByEmail(email: string): Promise<boolean> {
     // procura o usuário pelo e-mail na base de dados
     const user = await UserEntity.findOne({
       where: { login: email },
@@ -23,7 +23,7 @@ export class UserRepository {
     return true;
   }
 
-  async verifyUserByDocument(document: string): Promise<boolean> {
+  async verifyUserAlreadyExistsByDocument(document: string): Promise<boolean> {
     // procura o usuário pelo documento (cpf, cnpj) na base dados
 
     const userDocument = await ProfileDataEntity.findOne({
@@ -32,7 +32,7 @@ export class UserRepository {
       },
     });
 
-    if (userDocument) return false;
+    if (!userDocument) return false;
 
     return true;
   }

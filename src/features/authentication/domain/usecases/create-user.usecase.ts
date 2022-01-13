@@ -14,10 +14,10 @@ interface UserParams {
  */
 export class CreateUser {
   // injeção de dependência
-  readonly #repository: UserRepository;
+  repository: UserRepository;
 
   constructor(repository: UserRepository) {
-    this.#repository = repository;
+    this.repository = repository;
   }
 
   async execute(params: UserParams): Promise<User> {
@@ -28,18 +28,16 @@ export class CreateUser {
      */
 
     // verificar se usuário já existe pelo e-mail
-    const userExistsByEmail = await this.#repository.verifyUserByEmail(
-      params.email
-    );
+    const userExistsByEmail =
+      await this.repository.verifyUserAlreadExistsByEmail(params.email);
 
     if (userExistsByEmail) {
       throw new Error("User already exists with this email");
     }
 
     // verificar se usuário já existe pelo documento
-    const userExistsByDocument = await this.#repository.verifyUserByDocument(
-      params.document
-    );
+    const userExistsByDocument =
+      await this.repository.verifyUserAlreadyExistsByDocument(params.document);
 
     if (userExistsByDocument) {
       throw new Error("User already exists with this document");
@@ -57,7 +55,7 @@ export class CreateUser {
     );
 
     // salvar usuário na base de dados
-    const userCreated = await this.#repository.createUser({
+    const userCreated = await this.repository.createUser({
       name: params.name,
       document: params.document,
       email: params.email,
