@@ -28,7 +28,7 @@ export class CreateUser {
      */
 
     // verificar se usuário já existe pelo e-mail
-    const userExistsByEmail = await this.#repository.loadUserByEmail(
+    const userExistsByEmail = await this.#repository.verifyUserByEmail(
       params.email
     );
 
@@ -37,7 +37,7 @@ export class CreateUser {
     }
 
     // verificar se usuário já existe pelo documento
-    const userExistsByDocument = await this.#repository.loadUserByDocument(
+    const userExistsByDocument = await this.#repository.verifyUserByDocument(
       params.document
     );
 
