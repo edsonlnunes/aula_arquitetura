@@ -35,8 +35,8 @@ export class CreateProjectController implements Controller {
       const project = await repository.create(req.body);
 
       return ok(res, project);
-    } catch (error) {
-      return serverError(res);
+    } catch (error: any) {
+      return serverError(res, error);
     }
   }
 }

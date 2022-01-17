@@ -13,7 +13,7 @@ export class SignUpController implements Controller {
     /**
      * Lógica para receber a requisição e acessar
      * a camada domain através dos usecases (casos de uso)
-     * para executar a lógica de criar um usuário
+     * para executar a lógica de criar uma conta de usuário
      */
 
     const data = req.body;

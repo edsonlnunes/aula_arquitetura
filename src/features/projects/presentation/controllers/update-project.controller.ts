@@ -20,8 +20,8 @@ export class UpdateProjectController implements Controller {
       if (!project) return notFound(res);
 
       return ok(res, project);
-    } catch (error) {
-      return serverError(res);
+    } catch (error: any) {
+      return serverError(res, error);
     }
   }
 }

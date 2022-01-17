@@ -22,8 +22,8 @@ export class GetOneProjectController implements Controller {
       if (!project) return notFound(res);
 
       return ok(res, project);
-    } catch (error) {
-      serverError(res);
+    } catch (error: any) {
+      return serverError(res, error);
     }
   }
 }

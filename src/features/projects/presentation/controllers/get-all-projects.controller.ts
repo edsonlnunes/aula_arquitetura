@@ -18,8 +18,8 @@ export class GetAllProjectsController implements Controller {
       if (projects.length === 0) return notFound(res);
 
       return ok(res, projects);
-    } catch (error) {
-      return serverError(res);
+    } catch (error: any) {
+      return serverError(res, error);
     }
   }
 }
