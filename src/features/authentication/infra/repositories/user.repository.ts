@@ -12,6 +12,28 @@ interface UserParams {
 }
 
 export class UserRepository {
+  async getUserByLogin(login: string): Promise<User | undefined> {
+    const user = await UserEntity.findOne({
+      where: {
+        login,
+      },
+      relations: ["profile"],
+    });
+
+    if (!user) return undefined;
+
+    return {
+      uid: user.uid,
+      password: user.password,
+      enable: user.enable,
+      name: user.profile.name,
+      document: user.profile.document,
+      phone: user.profile.phone,
+      uidProfile: user.profile.uid,
+      email: user.profile.email,
+    };
+  }
+
   async verifyUserAlreadExistsByEmail(email: string): Promise<boolean> {
     // procura o usuário pelo e-mail na base de dados
     const user = await UserEntity.findOne({
