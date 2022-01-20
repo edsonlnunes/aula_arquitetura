@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { CacheRepository } from "../../../../core/infra/repositories/cache.repository";
 import { Controller } from "../../../../core/presentation/contracts/controller";
 import {
   notFound,
@@ -18,6 +19,10 @@ export class UpdateProjectController implements Controller {
       const project = await repository.editProject({ uid, ...req.body });
 
       if (!project) return notFound(res);
+
+      const cache = new CacheRepository();
+      await cache.delete("projects");
+      await cache.delete(`project:${uid}`);
 
       return ok(res, project);
     } catch (error: any) {

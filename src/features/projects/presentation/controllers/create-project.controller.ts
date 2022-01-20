@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { CacheRepository } from "../../../../core/infra/repositories/cache.repository";
 import { Controller } from "../../../../core/presentation/contracts/controller";
 import {
   ok,
@@ -31,8 +32,18 @@ export class CreateProjectController implements Controller {
   async handle(req: Request, res: Response): Promise<any> {
     try {
       const repository = new ProjectRepository();
+      const cache = new CacheRepository();
 
+      // salvar o project na base dados
       const project = await repository.create(req.body);
+
+      // salvar o project no cache (redis)
+      const result = await cache.set(`project:${project.uid}`, project);
+
+      if (!result) console.log("NÃO SALVOU NO CACHE");
+
+      // limpa a lista de registros do redis, pois o cache está desatualizado neste momento
+      await cache.delete("projects");
 
       return ok(res, project);
     } catch (error: any) {
