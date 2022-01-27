@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "dev:debug": "ts-node-dev --inspect=0.0.0.0:9229 src/server.ts",
-    "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run"
+    "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
+    "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
