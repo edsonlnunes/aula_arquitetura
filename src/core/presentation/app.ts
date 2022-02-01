@@ -16,6 +16,10 @@ export default class App {
     this.#express = express();
   }
 
+  get server(): express.Express {
+    return this.#express;
+  }
+
   // inicia toda configuração da aplicação
   public init() {
     this.middlewares();

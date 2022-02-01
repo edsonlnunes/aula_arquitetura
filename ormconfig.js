@@ -3,6 +3,7 @@ require('dotenv').config();
 let config = {};
 
 const enviroment = process.env.NODE_ENV?.toLocaleLowerCase()
+console.log(enviroment)
 
 if(enviroment === 'test'){
     config = {

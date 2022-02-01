@@ -10,8 +10,8 @@
     "migration:run:test": "cross-env NODE_ENV=test ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show",
     "test:setup": "rimraf testdb.sql && yarn migration:run:test",
-    "test": "yarn test:setup && cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "yarn test:setup && cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
+    "test": "yarn test:setup && cross-env NODE_ENV=test jest --watch --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "yarn test:setup && cross-env NODE_ENV=test jest --watch --passWithNoTests --runInBand",
     "test:coverage": "yarn test --coverage"
   },
   "dependencies": {

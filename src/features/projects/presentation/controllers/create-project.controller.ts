@@ -47,6 +47,7 @@ export class CreateProjectController implements Controller {
 
       return ok(res, project);
     } catch (error: any) {
+      console.log(error);
       return serverError(res, error);
     }
   }
