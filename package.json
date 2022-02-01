@@ -10,7 +10,9 @@
     "migration:run:test": "cross-env NODE_ENV=test ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show",
     "test:setup": "rimraf testdb.sql && yarn migration:run:test",
-    "test": "jest "
+    "test": "yarn test:setup && cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "yarn test:setup && cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
+    "test:coverage": "yarn test --coverage"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
