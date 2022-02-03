@@ -3,10 +3,10 @@ import { Project } from "../../domain/models/project";
 
 interface ProjectParams {
   uid?: string;
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
+  title: string;
+  detail: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 /**
@@ -37,8 +37,8 @@ export class ProjectRepository {
      * os parametros definido.
      */
     const projectEntity = ProjectEntity.create({
-      name: data.name,
-      description: data.description,
+      name: data.title,
+      description: data.detail,
       startDate: data.startDate,
       endDate: data.endDate,
     });
@@ -75,8 +75,8 @@ export class ProjectRepository {
     if (!projectEntity) return undefined;
 
     const projectUpdated = ProjectEntity.create({
-      name: data.name,
-      description: data.description,
+      name: data.title,
+      description: data.detail,
       uid: data.uid,
     });
 
