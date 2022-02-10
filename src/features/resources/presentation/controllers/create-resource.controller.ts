@@ -1,4 +1,5 @@
 import { Response, Request } from "express";
+import { CacheRepository } from "../../../../core/infra/repositories/cache.repository";
 import {
   badRequest,
   ok,
@@ -38,6 +39,10 @@ export class CreateResourceController {
       const repository = new ResourceRepository();
 
       const resource = await repository.createResource(req.body);
+
+      const cache = new CacheRepository();
+      await cache.set(`resource:${resource.uid}`, resource);
+      await cache.delete("resources");
 
       return ok(res, resource);
       // return res.status(200).json({ ...req.body, uid: uuid() });

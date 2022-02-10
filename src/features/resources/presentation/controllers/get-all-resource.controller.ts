@@ -5,30 +5,36 @@ import {
   ok,
   serverError,
 } from "../../../../core/presentation/helpers/http-helper";
+import { Resource } from "../../domain/models/resource";
 import { ResourceRepository } from "../../infra/repositories/resource.repository";
 
-export class GetOneResourceController {
+export class GetAllResourceController {
   async handle(req: Request, res: Response): Promise<any> {
     try {
-      const { uid } = req.params;
-
       const cache = new CacheRepository();
 
-      const resourceCache = await cache.get(`resource:${uid}`);
+      const resourcesCache: Resource[] | undefined = await cache.get(
+        "resources"
+      );
 
-      if (resourceCache) {
-        return ok(res, { ...resourceCache, _cache: true });
+      if (resourcesCache) {
+        return ok(
+          res,
+          resourcesCache.map((resource) => ({
+            ...resource,
+            _cache: true,
+          }))
+        );
       }
 
       const repository = new ResourceRepository();
+      const resources = await repository.getAllResources();
 
-      const resource = await repository.getResourceByUid(uid);
+      if (!resources) return notFound(res);
 
-      if (!resource) return notFound(res);
+      await cache.set("resources", resources);
 
-      await cache.set(`resource:${resource.uid}`, resource);
-
-      return ok(res, resource);
+      return ok(res, resources);
     } catch (error: any) {
       return serverError(res, error);
     }

@@ -3,17 +3,22 @@ import express from "express";
 import { ResourcesRoutes } from "../../../../../src/features/resources/presentation/routes/routes";
 import { ResourceEntity } from "../../../../../src/core/infra/data/database/entities/ResourceEntity";
 import Database from "../../../../../src/core/infra/data/connections/database";
+import Redis from "../../../../../src/core/infra/data/connections/redis";
 import { ResourceRepository } from "../../../../../src/features/resources/infra/repositories/resource.repository";
+
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 describe("/POST resources", () => {
   let server: express.Express;
   const database = new Database();
+  const redis = new Redis();
 
   beforeAll(async () => {
     server = express();
     server.use(express.json());
     server.use(new ResourcesRoutes().init());
     await database.openConnection();
+    await redis.openConnection();
   });
 
   beforeEach(() => {
@@ -22,10 +27,18 @@ describe("/POST resources", () => {
 
   afterAll(async () => {
     await ResourceEntity.clear();
+    await (await redis.getConnection()).flushall();
     await database.closeConnection();
+    await redis.closeConnection();
   });
 
   test("deve retornar 200 com um recurso criado", async () => {
+    const redisConnection = await redis.getConnection();
+
+    await redisConnection.set("resources", JSON.stringify([{}, {}]));
+
+    await expect(redisConnection.exists("resources")).resolves.toBe(1);
+
     await request(server)
       .post("/resources")
       .send({
@@ -45,6 +58,12 @@ describe("/POST resources", () => {
         const resourceDB = await ResourceEntity.findOne(res.body.uid);
         expect(resourceDB).toBeTruthy();
         expect(resourceDB.name).toBe("any_name");
+
+        await expect(
+          redisConnection.exists(`resource:${resourceDB.uid}`)
+        ).resolves.toBe(1);
+
+        await expect(redisConnection.exists("resources")).resolves.toBe(0);
       });
   });
 

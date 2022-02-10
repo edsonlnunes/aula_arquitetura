@@ -17,12 +17,32 @@ export class ResourceRepository {
       unit: data.unit,
     }).save();
 
+    return this.mapperEntityToModel(resource);
+  }
+
+  async getResourceByUid(uid: string): Promise<Resource | undefined> {
+    const resource = await ResourceEntity.findOne(uid);
+
+    if (!resource) return undefined;
+
+    return this.mapperEntityToModel(resource);
+  }
+
+  async getAllResources(): Promise<Resource[] | undefined> {
+    const resources = await ResourceEntity.find();
+
+    if (resources.length === 0) return undefined;
+
+    return resources.map(this.mapperEntityToModel);
+  }
+
+  private mapperEntityToModel(entity: ResourceEntity): Resource {
     return {
-      uid: resource.uid,
-      name: resource.name,
-      description: resource.description,
-      price: resource.price,
-      unit: resource.unit,
+      uid: entity.uid,
+      name: entity.name,
+      description: entity.description,
+      price: entity.price,
+      unit: entity.unit,
     };
   }
 }
